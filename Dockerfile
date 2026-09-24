@@ -38,5 +38,12 @@ RUN chown -R www-data:www-data /var/www/html \
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Install Node and build frontend assets
+RUN apt-get update && apt-get install -y nodejs npm
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
 EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]
