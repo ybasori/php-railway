@@ -8,11 +8,11 @@ RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
     && ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
     && ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 
-# --- System dependencies, PHP extensions, Node.js for asset builds ---
+# --- System dependencies, PHP extensions (Postgres instead of MySQL), Node.js ---
 RUN apt-get update && apt-get install -y \
     git unzip libzip-dev libpng-dev libonig-dev libxml2-dev libpq-dev \
     nodejs npm \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # --- Enable rewrite (needed for Laravel's pretty URLs) ---
